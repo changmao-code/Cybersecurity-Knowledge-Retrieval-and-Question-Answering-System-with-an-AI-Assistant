@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home | Cybersecurity Learning Hub</title>
+
+    <style>
+        /* Basic page settings */
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f5f6fa;
+            color: #182644;
+            line-height: 1.6;
+        }
+        .container {
+            width: calc(100% - 40px);
+            max-width: 1160px;
+            margin: 0 auto;
+        }
+        /* Header */
+        header {
+            background-color: white;
+            border-bottom: 1px solid #dce1ec;
+        }
+        .nav-container {
+            min-height: 84px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 24px;
+            flex-wrap: wrap;
+            padding-top: 18px;
+            padding-bottom: 18px;
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .logo {
+            width: 42px;
+            height: 42px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 12px;
+            background-color: #182644;
+            color: #ffc75a;
+            font-size: 22px;
+        }
+        .nav-items {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .nav-item {
+            padding: 9px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        .nav-item.active {
+            background-color: #eef0ff;
+            color: #354dcc;
+            font-weight: bold;
+        }
+        /* Hero section */
+        .hero {
+            padding: 64px 0;
+            background: linear-gradient(120deg, #182644, #414894);
+            color: white;
+        }
+        .hero-layout {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr;
+            align-items: center;
+            gap: 56px;
+        }
+
+        .hero-label {
+            margin: 0 0 18px;
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: #b8c8ff;
+        }
+
+        .hero h1 {
+            margin: 0 0 24px;
+            font-size: clamp(32px, 4vw, 50px);
+            line-height: 1.2;
+            letter-spacing: -1px;
+        }
+
+        .hero-description {
+            max-width: 590px;
+            margin: 0;
+            font-size: 17px;
+            color: #dbe3f7;
+        }
+
+        .hero-note {
+            margin: 24px 0 0;
+            font-size: 13px;
+            color: #c5d0eb;
+        }
+
+        /* Learning journey */
+        .journey {
+            padding: 26px;
+            border: 1px solid #7885aa;
+            border-radius: 16px;
+            background-color: rgba(255, 255, 255, 0.04);
+        }
+
+        .journey h2 {
+            margin: 0 0 16px;
+            font-size: 13px;
+            letter-spacing: 1px;
+            color: #c5d0eb;
+        }
+
+        .journey-step {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            padding: 16px 0;
+        }
+
+        .journey-step + .journey-step {
+            border-top: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        .step-number {
+            font-size: 22px;
+            font-weight: bold;
+            color: #ffc75a;
+        }
+
+        .journey-step h3 {
+            margin: 0 0 4px;
+            font-size: 16px;
+        }
+
+        .journey-step p {
+            margin: 0;
+            font-size: 13px;
+            color: #dbe3f7;
+        }
+
+        /* Knowledge topics */
+        .topics-section {
+            padding: 48px 0;
+        }
+
+        .section-label {
+            margin: 0 0 8px;
+            color: #5668a7;
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .section-title {
+            margin: 0 0 10px;
+            font-size: 28px;
+            line-height: 1.3;
+        }
+
+        .section-description {
+            margin: 0 0 28px;
+            color: #58647c;
+        }
+
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .topic-card {
+            padding: 26px;
+            background-color: white;
+            border: 1px solid #dce1ec;
+            border-radius: 12px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .topic-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(24, 38, 68, 0.08);
+        }
+
+        .topic-number {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .blue {
+            background-color: #eef0ff;
+            color: #354dcc;
+        }
+
+        .green {
+            background-color: #eaf5ef;
+            color: #26724e;
+        }
+
+        .yellow {
+            background-color: #fff4df;
+            color: #825a15;
+        }
+
+        .purple {
+            background-color: #f0ebfa;
+            color: #7143a8;
+        }
+
+        .topic-card h3 {
+            margin: 0 0 12px;
+            font-size: 17px;
+            line-height: 1.5;
+        }
+
+        .topic-card p {
+            margin: 0;
+            font-size: 14px;
+            color: #58647c;
+        }
+
+        /* Full-width platform features */
+        .overview-section {
+            padding-bottom: 48px;
+        }
+
+        .overview-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+        }
+
+        .panel {
+            padding: 30px;
+            background-color: white;
+            border: 1px solid #dce1ec;
+            border-radius: 12px;
+        }
+
+        .panel h2 {
+            margin: 0 0 12px;
+            font-size: 22px;
+        }
+
+        .panel > p {
+            margin: 0 0 20px;
+            color: #58647c;
+            font-size: 14px;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .feature-list li {
+            padding: 18px 0;
+            border-top: 1px solid #dce1ec;
+        }
+
+        .feature-list h3 {
+            margin: 0 0 4px;
+            font-size: 15px;
+        }
+
+        .feature-list p {
+            margin: 0;
+            color: #58647c;
+            font-size: 13px;
+        }
+
+        /* Footer */
+        footer {
+            padding: 24px 0;
+            background-color: white;
+            border-top: 1px solid #dce1ec;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer-content p {
+            margin: 0;
+            color: #58647c;
+            font-size: 12px;
+        }
+
+        /* Tablet */
+        @media (max-width: 1000px) {
+            .nav-container {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+
+            .hero-layout {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+
+            .topics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Mobile */
+        @media (max-width: 600px) {
+            .container {
+                width: calc(100% - 32px);
+            }
+
+            .brand {
+                font-size: 16px;
+            }
+
+            .nav-item {
+                padding: 8px;
+                font-size: 12px;
+            }
+
+            .hero {
+                padding: 40px 0;
+            }
+
+            .topics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .panel {
+                padding: 24px;
+            }
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            .topic-card {
+                transition: none;
+            }
+
+            .topic-card:hover {
+                transform: none;
+            }
+        }
+        .signup-link {
+    background-color: #354dcc;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.signup-link:hover {
+    background-color: #293ca3;
+}
+.logout-button {
+    border: none;
+    font-family: inherit;
+    cursor: pointer;
+}
+.topic-link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+}
+
+.topic-link:focus-visible {
+    outline: 3px solid #354dcc;
+    outline-offset: 4px;
+}
+    .knowledge-nav { color: inherit; text-decoration: none; }
+.knowledge-nav:hover { background: #eef0ff; color: #354dcc; }
+a:focus-visible, button:focus-visible { outline: 3px solid #354dcc; outline-offset: 3px; }
+</style>
+</head>
+
+<body>
+    <!-- Header: display only -->
+    <header>
+        <div class="container nav-container">
+            <div class="brand">
+                <span class="logo" aria-hidden="true">C</span>
+                <span>Cybersecurity Learning Hub</span>
+            </div>
+
+            <div class="nav-items" aria-label="Main navigation">
+                <span class="nav-item active">Home</span>
+                <a class="nav-item knowledge-nav" href="/topics">Knowledge Topics</a>
+                <span class="nav-item">AI Assistant</span>
+                <span class="nav-item">Practice</span>
+                <span class="nav-item">My Learning</span>
+                <span id="current-user" class="nav-item" hidden></span>
+
+<a id="signup-link" class="nav-item signup-link" href="/signup">
+    Sign Up
+</a>
+
+<a id="login-link" class="nav-item signup-link" href="/login">
+    Log In
+</a>
+
+<button
+    id="logout-button"
+    class="nav-item signup-link logout-button"
+    type="button"
+    hidden
+>
+    Log Out
+</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Introduction -->
+        <section class="hero">
+            <div class="container hero-layout">
+                <div>
+                    <p class="hero-label">
+                        YOUR CYBERSECURITY LEARNING SPACE
+                    </p>
+
+                    <h1>
+                        Learn cybersecurity,<br>
+                        one topic at a time.
+                    </h1>
+
+                    <p class="hero-description">
+                        Explore security topics, understand key concepts
+                        and build your knowledge with guided learning.
+                    </p>
+
+                    <p class="hero-note">
+                        A learning platform for cybersecurity students.
+                    </p>
+                </div>
+
+                <aside class="journey">
+                    <h2>THE PLANNED LEARNING JOURNEY</h2>
+
+                    <div class="journey-step">
+                        <span class="step-number">01</span>
+                        <div>
+                            <h3>Explore a topic</h3>
+                            <p>Choose an area you want to understand.</p>
+                        </div>
+                    </div>
+
+                    <div class="journey-step">
+                        <span class="step-number">02</span>
+                        <div>
+                            <h3>Ask and understand</h3>
+                            <p>Learn through explanations and sources.</p>
+                        </div>
+                    </div>
+
+                    <div class="journey-step">
+                        <span class="step-number">03</span>
+                        <div>
+                            <h3>Practise and review</h3>
+                            <p>Check your understanding over time.</p>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </section>
+
+        <!-- Knowledge categories -->
+        <section class="topics-section">
+            <div class="container">
+                <p class="section-label">CHOOSE A SUBJECT</p>
+
+                <h2 class="section-title">
+                    Explore knowledge topics
+                </h2>
+
+                <p class="section-description">
+                    Four starting points for your cybersecurity studies.
+                </p>
+
+                <div class="topics-grid">
+                    <a class="topic-card topic-link" href="/topics/networking">
+                  <span class="topic-number blue">01</span>
+                   <h3>Network Fundamentals</h3>
+                     <p>
+                        Explore networks, communication protocols
+                         and the foundations of connected systems.
+                    </p>
+                    </a>
+
+                    <a class="topic-card topic-link" href="/topics/cryptography">
+                        <span class="topic-number green">02</span>
+                        <h3>Cryptography &amp; Authentication</h3>
+                        <p>
+                            Understand encryption, identity verification
+                            and access control.
+                        </p>
+                    </a>
+
+                    <a class="topic-card topic-link" href="/topics/web-security">
+                        <span class="topic-number yellow">03</span>
+                        <h3>Web Security</h3>
+                        <p>
+                            Explore common web threats and the
+                            principles of secure applications.
+                        </p>
+                    </a>
+
+                    <a class="topic-card topic-link" href="/topics/privacy">
+                        <span class="topic-number purple">04</span>
+                        <h3>Privacy &amp; Protection</h3>
+                        <p>
+                            Learn about personal information,
+                            online privacy and safer digital behaviour.
+                        </p>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Full-width feature panel -->
+        <section class="overview-section">
+            <div class="container overview-grid">
+                <article class="panel">
+                    <h2>Planned platform features</h2>
+
+                    <p>
+                        A connected workflow for finding information,
+                        understanding concepts and reviewing knowledge.
+                    </p>
+
+                    <ul class="feature-list">
+                        <li>
+                            <h3>Knowledge Search</h3>
+                            <p>
+                                Find relevant content in reviewed resources.
+                            </p>
+                        </li>
+
+                        <li>
+                            <h3>AI Learning Assistant</h3>
+                            <p>
+                                Receive explanations supported by
+                                source references.
+                            </p>
+                        </li>
+
+                        <li>
+                            <h3>Topic Practice</h3>
+                            <p>
+                                Check understanding through questions
+                                and feedback.
+                            </p>
+                        </li>
+
+                        <li>
+                            <h3>Learning Progress</h3>
+                            <p>
+                                Review previous activity and continue learning.
+                            </p>
+                        </li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <div class="container footer-content">
+            <p>
+                Cybersecurity Knowledge Retrieval and AI Learning System
+            </p>
+            <p>COMP3000 Project · Chang Mao 26114129</p>
+        </div>
+    </footer>
+    <script>
+    const currentUser = document.getElementById("current-user");
+    const signupLink = document.getElementById("signup-link");
+    const loginLink = document.getElementById("login-link");
+    const logoutButton = document.getElementById("logout-button");
+
+    async function updateAccountDisplay() {
+        try {
+            const response = await fetch("/api/me", {
+                cache: "no-store"
+            });
+
+            if (!response.ok) {
+                throw new Error("Unable to check login status.");
+            }
+
+            const data = await response.json();
+            const loggedIn = data.authenticated === true;
+
+            currentUser.hidden = !loggedIn;
+            logoutButton.hidden = !loggedIn;
+            signupLink.hidden = loggedIn;
+            loginLink.hidden = loggedIn;
+
+            currentUser.textContent = loggedIn
+                ? `Hello, ${data.username}`
+                : "";
+
+        } catch (error) {
+            currentUser.hidden = false;
+            currentUser.textContent = "Account status unavailable.";
+        }
+    }
+
+    logoutButton.addEventListener("click", async () => {
+        logoutButton.disabled = true;
+
+        try {
+            const response = await fetch("/api/logout", {
+                method: "POST"
+            });
+
+            if (!response.ok) {
+                throw new Error("Unable to log out. Please try again.");
+            }
+
+            window.location.reload();
+
+        } catch (error) {
+            alert(error.message);
+            logoutButton.disabled = false;
+        }
+    });
+
+    window.addEventListener("pageshow", updateAccountDisplay);
+</script>
+</body>
+</html>

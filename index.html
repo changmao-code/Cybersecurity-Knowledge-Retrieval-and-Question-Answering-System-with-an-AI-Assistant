@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cybersecurity Learning System</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f6fa;
+      color: #203047;
+      margin: 0;
+      padding: 40px 20px;
+    }
+    main {
+      max-width: 760px;
+      margin: auto;
+      background: white;
+      padding: 32px;
+      border-radius: 12px;
+    }
+    textarea {
+      box-sizing: border-box;
+      width: 100%;
+      min-height: 120px;
+      margin: 12px 0;
+      padding: 12px;
+      font: inherit;
+    }
+    button {
+      background: #2458a6;
+      color: white;
+      border: 0;
+      border-radius: 6px;
+      padding: 12px 20px;
+      cursor: pointer;
+    }
+    button:disabled { opacity: 0.6; }
+    #answer { white-space: pre-wrap; line-height: 1.6; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Cybersecurity Learning System</h1>
+    <p>Ask a question about cybersecurity.</p>
+
+    <form id="question-form">
+      <label for="question">Your question</label>
+      <textarea id="question" maxlength="1000" required
+        placeholder="For example: What is phishing?"></textarea>
+      <button id="submit-button" type="submit">Submit question</button>
+    </form>
+
+    <h2>Response</h2>
+    <p id="answer" role="status">Your response will appear here.</p>
+  </main>
+
+  <script>
+    const form = document.getElementById("question-form");
+    const input = document.getElementById("question");
+    const button = document.getElementById("submit-button");
+    const answer = document.getElementById("answer");
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const question = input.value.trim();
+
+      if (!question) {
+        answer.textContent = "Please enter a question.";
+        return;
+      }
+
+      button.disabled = true;
+      answer.textContent = "Sending your question...";
+
+      try {
+        const response = await fetch("/ask", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ question })
+        });
+
+        if (!response.ok) {
+          throw new Error(`Request failed (${response.status}). Please try again.`);
+        }
+
+        const data = await response.json();
+        answer.textContent = data.answer;
+      } catch (error) {
+        answer.textContent = error.message;
+      } finally {
+        button.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

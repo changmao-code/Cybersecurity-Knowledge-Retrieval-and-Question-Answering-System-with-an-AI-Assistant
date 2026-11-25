@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Create Account | Cybersecurity Learning Hub</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 40px 20px;
+            font-family: Arial, sans-serif;
+            background: #f5f6fa;
+            color: #182644;
+            line-height: 1.6;
+        }
+
+        main {
+            max-width: 480px;
+            margin: 30px auto;
+            padding: 32px;
+            background: white;
+            border: 1px solid #dce1ec;
+            border-radius: 14px;
+        }
+
+        h1 {
+            margin: 20px 0 8px;
+            font-size: 28px;
+        }
+
+        .description {
+            color: #58647c;
+            margin-bottom: 24px;
+        }
+
+        a {
+            color: #354dcc;
+        }
+
+        label {
+            display: block;
+            margin-top: 20px;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #aab4c8;
+            border-radius: 7px;
+            font: inherit;
+        }
+
+        input:focus {
+            outline: 2px solid #354dcc;
+            outline-offset: 2px;
+        }
+
+        .hint {
+            margin: 6px 0 0;
+            font-size: 12px;
+            color: #58647c;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 26px;
+            padding: 13px;
+            border: 0;
+            border-radius: 7px;
+            background: #354dcc;
+            color: white;
+            font: inherit;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: wait;
+        }
+
+        #message {
+            margin-bottom: 0;
+            overflow-wrap: anywhere;
+        }
+
+        .success {
+            color: #20623f;
+        }
+
+        .error {
+            color: #ad2424;
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <a href="/">← Back to home</a>
+
+        <h1>Create your account</h1>
+        <p class="description">
+            Join the Cybersecurity Learning Hub.
+        </p>
+
+        <form id="register-form">
+            <label for="username">Username</label>
+            <input
+                id="username"
+                name="username"
+                type="text"
+                minlength="3"
+                maxlength="30"
+                pattern="[a-zA-Z0-9_]+"
+                autocomplete="username"
+                aria-describedby="username-hint"
+                required
+            >
+            <p id="username-hint" class="hint">
+                Use 3–30 letters, numbers or underscores.
+                Usernames are stored in lowercase.
+            </p>
+
+            <label for="password">Password</label>
+            <input
+                id="password"
+                name="password"
+                type="password"
+                minlength="8"
+                maxlength="128"
+                autocomplete="new-password"
+                aria-describedby="password-hint"
+                required
+            >
+            <p id="password-hint" class="hint">
+                Use 8–128 characters.
+            </p>
+
+            <button id="register-button" type="submit">
+                Create account
+            </button>
+        </form>
+
+        <p id="message" role="status" aria-live="polite"></p>
+    </main>
+
+    <script>
+        const form = document.getElementById("register-form");
+        const username = document.getElementById("username");
+        const password = document.getElementById("password");
+        const button = document.getElementById("register-button");
+        const message = document.getElementById("message");
+
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            button.disabled = true;
+            button.textContent = "Creating account...";
+            message.className = "";
+            message.textContent = "Please wait...";
+
+            try {
+                const response = await fetch("/register", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        username: username.value,
+                        password: password.value
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    let errorMessage = "Unable to create your account.";
+
+                    if (typeof data.detail === "string") {
+                        errorMessage = data.detail;
+                    } else if (response.status === 422) {
+                        errorMessage =
+                            "Please check the username and password requirements.";
+                    }
+
+                    throw new Error(errorMessage);
+                }
+
+                message.className = "success";
+                message.textContent =
+                    `Account "${data.username}" created successfully.`;
+
+                form.reset();
+
+            } catch (error) {
+                message.className = "error";
+
+                message.textContent = error instanceof TypeError
+                    ? "Unable to connect. Check that the backend is running."
+                    : error.message;
+
+            } finally {
+                button.disabled = false;
+                button.textContent = "Create account";
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Log In | Cybersecurity Learning Hub</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 40px 20px;
+            font-family: Arial, sans-serif;
+            background: #f5f6fa;
+            color: #182644;
+            line-height: 1.6;
+        }
+
+        main {
+            max-width: 480px;
+            margin: 30px auto;
+            padding: 32px;
+            background: white;
+            border: 1px solid #dce1ec;
+            border-radius: 14px;
+        }
+
+        h1 {
+            margin: 20px 0 8px;
+            font-size: 28px;
+        }
+
+        .description {
+            color: #58647c;
+            margin-bottom: 24px;
+        }
+
+        a {
+            color: #354dcc;
+        }
+
+        label {
+            display: block;
+            margin-top: 20px;
+            margin-bottom: 6px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #aab4c8;
+            border-radius: 7px;
+            font: inherit;
+        }
+
+        input:focus {
+            outline: 2px solid #354dcc;
+            outline-offset: 2px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 26px;
+            padding: 13px;
+            border: 0;
+            border-radius: 7px;
+            background: #354dcc;
+            color: white;
+            font: inherit;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: wait;
+        }
+
+        .signup-note {
+            margin-top: 22px;
+            font-size: 14px;
+            color: #58647c;
+        }
+
+        #message {
+            overflow-wrap: anywhere;
+        }
+
+        .error {
+            color: #ad2424;
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <a href="/">← Back to home</a>
+
+        <h1>Welcome back</h1>
+
+        <p class="description">
+            Log in to your Cybersecurity Learning Hub account.
+        </p>
+
+        <form id="login-form">
+            <label for="username">Username</label>
+            <input
+                id="username"
+                name="username"
+                type="text"
+                maxlength="30"
+                autocomplete="username"
+                required
+            >
+
+            <label for="password">Password</label>
+            <input
+                id="password"
+                name="password"
+                type="password"
+                maxlength="128"
+                autocomplete="current-password"
+                required
+            >
+
+            <button id="login-button" type="submit">
+                Log In
+            </button>
+        </form>
+
+        <p id="message" role="status" aria-live="polite"></p>
+
+        <p class="signup-note">
+            Don't have an account?
+            <a href="/signup">Sign Up</a>
+        </p>
+    </main>
+
+    <script>
+        const form = document.getElementById("login-form");
+        const username = document.getElementById("username");
+        const password = document.getElementById("password");
+        const button = document.getElementById("login-button");
+        const message = document.getElementById("message");
+
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            button.disabled = true;
+            button.textContent = "Logging in...";
+            message.className = "";
+            message.textContent = "Please wait...";
+
+            try {
+                const response = await fetch("/api/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        username: username.value,
+                        password: password.value
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    const errorMessage =
+                        typeof data.detail === "string"
+                            ? data.detail
+                            : "Unable to log in. Please try again.";
+
+                    throw new Error(errorMessage);
+                }
+
+                window.location.assign("/");
+
+            } catch (error) {
+                message.className = "error";
+
+                message.textContent = error instanceof TypeError
+                    ? "Unable to connect. Check that the backend is running."
+                    : error.message;
+
+            } finally {
+                button.disabled = false;
+                button.textContent = "Log In";
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Knowledge Topics | Cybersecurity Learning Hub</title><link rel="stylesheet" href="/knowledge-assets/knowledge.css"></head>
+<body><header>
+        <div class="container nav-container">
+            <div class="brand">
+                <span class="logo" aria-hidden="true">C</span>
+                <span>Cybersecurity Learning Hub</span>
+            </div>
+
+            <div class="nav-items" aria-label="Main navigation">
+                <a class="nav-item knowledge-nav" href="/">Home</a>
+                <a class="nav-item knowledge-nav active" aria-current="page" href="/topics">Knowledge Topics</a>
+                <span class="nav-item">AI Assistant</span>
+                <span class="nav-item">Practice</span>
+                <span class="nav-item">My Learning</span>
+                <span id="current-user" class="nav-item" hidden></span>
+
+<a id="signup-link" class="nav-item signup-link" href="/signup">
+    Sign Up
+</a>
+
+<a id="login-link" class="nav-item signup-link" href="/login">
+    Log In
+</a>
+
+<button
+    id="logout-button"
+    class="nav-item signup-link logout-button"
+    type="button"
+    hidden
+>
+    Log Out
+</button>
+            </div>
+        </div>
+    </header>
+<section class="knowledge-hero"><div class="container"><p>YOUR CYBERSECURITY LEARNING SPACE</p><h1 id="page-title">Knowledge Topics</h1><p id="page-intro">Choose a subject or search across the learning library.</p><span id="topic-badge" class="topic-badge"></span></div></section>
+<main class="knowledge-main"><nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a> / Knowledge Topics</nav>
+<div id="topic-cards" class="topics-grid catalogue-grid" aria-label="Knowledge topics"></div>
+<section class="search-panel" aria-label="Resource search"><h2>Search the knowledge library</h2>
+<form id="search-form"><div class="search-row"><div class="search-field"><label for="search">Keyword</label><input id="search" type="search" maxlength="100" placeholder="Try DNS, passwords or SQL injection"></div><div class="search-field filter-field"><label for="topic-filter">Topic</label><select id="topic-filter"><option value="">All topics</option></select></div><button id="search-button" type="submit">Search</button><button id="reset-search" class="secondary" type="button">Clear search</button></div></form></section>
+<p id="status" role="status" aria-live="polite">Loading resources...</p><div id="articles" aria-label="Learning resources"></div>
+<noscript>Please enable JavaScript to search and read learning resources.</noscript></main>
+<footer class="knowledge-footer">Cybersecurity Knowledge Retrieval and AI Learning System</footer>
+<script>
+    const currentUser = document.getElementById("current-user");
+    const signupLink = document.getElementById("signup-link");
+    const loginLink = document.getElementById("login-link");
+    const logoutButton = document.getElementById("logout-button");
+
+    async function updateAccountDisplay() {
+        try {
+            const response = await fetch("/api/me", {
+                cache: "no-store"
+            });
+
+            if (!response.ok) {
+                throw new Error("Unable to check login status.");
+            }
+
+            const data = await response.json();
+            const loggedIn = data.authenticated === true;
+
+            currentUser.hidden = !loggedIn;
+            logoutButton.hidden = !loggedIn;
+            signupLink.hidden = loggedIn;
+            loginLink.hidden = loggedIn;
+
+            currentUser.textContent = loggedIn
+                ? `Hello, ${data.username}`
+                : "";
+
+        } catch (error) {
+            currentUser.hidden = false;
+            currentUser.textContent = "Account status unavailable.";
+        }
+    }
+
+    logoutButton.addEventListener("click", async () => {
+        logoutButton.disabled = true;
+
+        try {
+            const response = await fetch("/api/logout", {
+                method: "POST"
+            });
+
+            if (!response.ok) {
+                throw new Error("Unable to log out. Please try again.");
+            }
+
+            window.location.reload();
+
+        } catch (error) {
+            alert(error.message);
+            logoutButton.disabled = false;
+        }
+    });
+
+    window.addEventListener("pageshow", updateAccountDisplay);
+</script><script src="/knowledge-assets/knowledge.js" defer></script></body></html>
